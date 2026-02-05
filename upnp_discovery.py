@@ -44,21 +44,12 @@ async def discover_media_renderers(timeout: int = SSDP_MX) -> list[dict[str, Any
             except Exception:
                 continue
             # Check if it has AVTransport (can play media)
+            # device.services is a dict {service_type: UpnpService}; use .values() to get services
             avt = None
-            for svc in device.services:
+            for svc in device.all_services:
                 if "AVTransport" in (svc.service_type or ""):
                     avt = svc
                     break
-            if avt is None:
-                # Check embedded devices (e.g. MediaRenderer as embedded device)
-                for emb in device.all_devices:
-                    for svc in emb.services:
-                        if "AVTransport" in (svc.service_type or ""):
-                            avt = svc
-                            break
-                    if avt is not None:
-                        device = emb
-                        break
             if avt is None:
                 continue
             name = (device.name or "Unknown").strip() or location

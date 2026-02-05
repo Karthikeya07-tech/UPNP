@@ -1,5 +1,5 @@
 """
-Serve a single local file over HTTP so a DLNA renderer on the same network can play it.
+Serve a single local fil e over HTTP so a DLNA renderer on the same network can play it.
 """
 import http.server
 import os

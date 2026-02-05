@@ -14,13 +14,10 @@ from async_upnp_client.client import UpnpDevice, UpnpService
 
 
 def _find_avtransport(device: UpnpDevice) -> UpnpService | None:
-    for svc in device.services:
+    # device.services is a dict {service_type: UpnpService}; all_services yields actual services
+    for svc in device.all_services:
         if "AVTransport" in (svc.service_type or ""):
             return svc
-    for emb in device.all_devices:
-        for svc in emb.services:
-            if "AVTransport" in (svc.service_type or ""):
-                return svc
     return None
 
 
